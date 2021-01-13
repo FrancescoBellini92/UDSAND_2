@@ -36,6 +36,15 @@ class LinkedList:
             self._prepend(value)
         self._size += 1
 
+    def prepend_node(self, node):
+        """ Prepend a value to the beginning of the list. """
+
+        if self.head is None:
+            self.head = node
+        else:
+            self._prepend_node(node)
+        self._size += 1
+
     def insert(self, value, pos: int):
         """ Insert value at pos position in the list. If pos is larger than the
         length of the list, append to the end of the list. """
@@ -136,6 +145,11 @@ class LinkedList:
         node_to_prepend = Node(value)
         node_to_prepend.next = self.head
         self.head = node_to_prepend
+
+    def _prepend_node(self, node_to_prepend):
+        node_to_prepend.next = self.head
+        self.head = node_to_prepend
+
 
     def __insert(self, value, pos):
         currentPosition = 0

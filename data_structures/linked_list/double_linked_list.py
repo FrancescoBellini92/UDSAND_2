@@ -17,6 +17,19 @@ class DoublyLinkedList(LinkedList):
     def __init__(self, *args):
         super().__init__(*args)
 
+
+    def remove_node(self, node):
+        if self.head and node is self.head:
+            self._pop()
+        elif node is self.tail:
+            node.previous.next = None
+            self.tail = node.previous
+        else:
+            node.previous.next = node.next
+            node.next.previous = node.previous
+        del node
+        self._size -= 1
+
     def move_to_tail(self, node: DoubleNode):
         if node is self.tail:
             return
@@ -58,6 +71,11 @@ class DoublyLinkedList(LinkedList):
         node_to_prepend.next = self.head
         self.head = node_to_prepend
 
+    def _prepend_node(self, node_to_prepend):
+        self.head.previous = node_to_prepend
+        node_to_prepend.next = self.head
+        self.head = node_to_prepend
+
     def _insert(self, value, pos: int):
         currentPosition = 0
         pos -= 1
@@ -74,7 +92,8 @@ class DoublyLinkedList(LinkedList):
         node_to_remove = self.head
         value_to_return = node_to_remove.value
         self.head = self.head.next
-        self.head.previous = None
+        if self.head:
+            self.head.previous = None
         del node_to_remove
         return value_to_return
 

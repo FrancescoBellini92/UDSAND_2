@@ -1,9 +1,10 @@
 """
 TASK EXPLANATION
-Finding all files under a given folder (and children subfolders) requires using recursiong.
 The file system is analogous to a tree, thus an algorithm similar to a depth-first-search can be used
 
 In this case, the search was implemented with a depth-first pre-order traversal
+
+Overall, the time complexity is O(n) as we recursively visit each sub-folder
 """
 
 
@@ -32,9 +33,9 @@ def find_files(suffix, path):
 
     files_found = []
 
-    items = [os.path.join(path, item) for item in os.listdir(path)]
-    subfolders = filter(lambda item: os.path.isdir(item), items)
-    files = filter(lambda item: os.path.isfile(item), items)
+    items = [os.path.join(path, item) for item in os.listdir(path)] # 1n
+    subfolders = filter(lambda item: os.path.isdir(item), items) # 1n
+    files = filter(lambda item: os.path.isfile(item), items) # 1n
 
     for file in files:
         if file.endswith(suffix):

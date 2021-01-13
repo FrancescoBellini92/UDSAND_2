@@ -3,6 +3,8 @@ TASK EXPLANATION
 In order to build a Least Recently Used Cache with  O(1) set and get operations, two data structures are required:
 1) a double linked list, in which each node is moved to the tail when their value is required
 2) a hash map, allowing to get the node of interest without traversing the list
+
+Overall, each operation has a time complexity of O(1)
 """
 
 from data_structures.linked_list.double_linked_list import *
