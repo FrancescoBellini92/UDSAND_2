@@ -3,8 +3,9 @@ TASK EXPLANATION
 The file system is analogous to a tree, thus an algorithm similar to a depth-first-search can be used
 
 In this case, the search was implemented with a depth-first pre-order traversal
-
-Overall, the time complexity is O(n) as we recursively visit each sub-folder
+Considering the n as the number of folders and files, in the worst case each of them is a folder and thus,
+given k operations perfomed in a single function call, we would do k * n operations as we recursively visit each sub-folder
+Overall, the time complexity is O(n)
 """
 
 
@@ -33,9 +34,9 @@ def find_files(suffix, path):
 
     files_found = []
 
-    items = [os.path.join(path, item) for item in os.listdir(path)] # 1n
-    subfolders = filter(lambda item: os.path.isdir(item), items) # 1n
-    files = filter(lambda item: os.path.isfile(item), items) # 1n
+    items = [os.path.join(path, item) for item in os.listdir(path)]
+    subfolders = filter(lambda item: os.path.isdir(item), items)
+    files = filter(lambda item: os.path.isfile(item), items)
 
     for file in files:
         if file.endswith(suffix):
