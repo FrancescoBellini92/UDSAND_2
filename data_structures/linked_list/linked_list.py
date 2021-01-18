@@ -22,7 +22,7 @@ class LinkedList:
         """ Append a value to the end of the list. """
 
         if self.tail is None:
-            self.__init_head(value)
+            self._init_head(value)
         else:
             self._append(value)
         self._size += 1
@@ -31,7 +31,7 @@ class LinkedList:
         """ Prepend a value to the beginning of the list. """
 
         if self.head is None:
-            self.__init_head(value)
+            self._init_head(value)
         else:
             self._prepend(value)
         self._size += 1
@@ -54,7 +54,7 @@ class LinkedList:
         elif pos == 0:
             self._prepend(value)
         else:
-            self.__insert(value, pos)
+            self._insert(value, pos)
         self._size += 1
 
     def remove(self, value):
@@ -133,13 +133,18 @@ class LinkedList:
                 return True
         return False
 
-    def __init_head(self, value):
+    def _init_head(self, value):
         self.head = Node(value)
         self.tail = self.head
 
     def _append(self, value):
         self.tail.next = Node(value)
         self.tail = self.tail.next
+
+    def _append_node(self, node):
+        self.tail.next = node
+        self.tail = node
+        self.tail.next = None
 
     def _prepend(self, value):
         node_to_prepend = Node(value)
@@ -150,8 +155,7 @@ class LinkedList:
         node_to_prepend.next = self.head
         self.head = node_to_prepend
 
-
-    def __insert(self, value, pos):
+    def _insert(self, value, pos):
         currentPosition = 0
         pos -= 1
         for node in self:

@@ -1,4 +1,5 @@
 from data_structures.linked_list.linked_list import *
+from data_structures.linked_list.nested_linked_list import *
 
 class NestedLinkedList(LinkedList):
     @staticmethod
@@ -39,6 +40,6 @@ class NestedLinkedList(LinkedList):
 
         if node.next is None:
             return node.value
-        return NestedLinkedList.merge(node.value, node.next.value)
+        return NestedLinkedList.merge(node.value, node.next.value).to_list()
 
 __all__ = ['NestedLinkedList']
