@@ -122,17 +122,6 @@ class LinkedList:
 
         return self._size
 
-    def is_circular(self):
-        fast_runner = self.head
-        slow_runner = self.head
-
-        while fast_runner and fast_runner.next:
-            slow_runner = slow_runner.next
-            fast_runner = fast_runner.next.next
-            if slow_runner == fast_runner:
-                return True
-        return False
-
     def _init_head(self, value):
         self.head = Node(value)
         self.tail = self.head
@@ -141,7 +130,7 @@ class LinkedList:
         self.tail.next = Node(value)
         self.tail = self.tail.next
 
-    def _append_node(self, node):
+    def _append_node(self, node: Node):
         self.tail.next = node
         self.tail = node
         self.tail.next = None
@@ -151,7 +140,7 @@ class LinkedList:
         node_to_prepend.next = self.head
         self.head = node_to_prepend
 
-    def _prepend_node(self, node_to_prepend):
+    def _prepend_node(self, node_to_prepend: Node):
         node_to_prepend.next = self.head
         self.head = node_to_prepend
 

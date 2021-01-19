@@ -1,18 +1,3 @@
-"""
-TASK EXPLANATION
-The Group class allows for the creation of a hierarchy of users and gruoups, similarly to a n-tree structure.
-
-In this case, the search was implemented with a breadth-first traversal, as it made more sense to me that
-a given user was searched in such a way rather than with a depth-first approach
-
-To increase efficiency, a set was used for storing user IDs (which should work as long as they are unique)
-
-Overall, the time complexity is O(n), as we have to visit each node of the tree (each group)
-
-The breadth first search was implemented with a queue and a while loop,returning when the user is found
-In case of user belonging to multiple groups, the first group is returned
-"""
-
 class Group(object):
     def __init__(self, _name):
         self.name = _name
@@ -79,8 +64,14 @@ def is_user_in_group(user, group):
     print('*** user <%s> not found ***' %user)
     return False
 
-
+# test case 1 -> user is in root group
 assert(is_user_in_group('root_user', root))
+
+# test case 2 -> user is in child group
 assert(is_user_in_group('child_1_user', root))
+
+# test case 3 -> user is in subgroup
 assert(is_user_in_group('sub_child_user', root))
-assert(not is_user_in_group('sub_sub_child_user', root))
+
+# test case 4 -> user is not present in any group
+assert(not is_user_in_group('absent_user', root))

@@ -1,39 +1,6 @@
-
 import sys
-from data_structures.linked_list.double_linked_list import *
+from data_structures.double_linked_list import *
 
-"""
-TASK EXPLANATION
-In this task two data structures are used:
-1- a double linked list
-2- a binary tree
-
-Given input n as the length of the string:
-
-1) We start by traversing the string to decode to create a character-frequency map, which will be used to populate the linked list
-These operations require traversing the string ( time complexity of O(n) ), and updating the character-frequency map (time complexity of O(1) )
-
-2) Then, the list is traversed n times to find the two nodes with smaller frequency value to create the Huffman tree,
-Time complexity depends in this case on:
-- the traversing of the list ( O(n) )
-- the removal of the node ( O(1) )
-- the instantiation of a TreeNode ( O(1) )
-- the prepending operation of the newly instantiated TreeNode to the linked list ( O(1) )
-Overall, the time complexity for a single function call is O(n). The recursive calls results in an overall time complexity
-of O(n + (n - 1) + (n -2) + ... 1) -> O(n)
-
-3) We create the a char-prefix map (for encoding the string) and a prefix_char map (to decode the encoded string) via a depth first traversal on the huffman tree,
-mapping each character to its prefix code and viceversa.
-Considering that the huffman tree is a binary tree, and at worst case each character is unique, we would end up with a tree that has 2n - 1 nodes
-Thus the overall time complexity of the tree traversal is O(n). Saving data in the hash maps takes O(1) time
-
-4) We iterare on the original string to convert each character with its prefix thanks the char-prefix map. The complexity is O(n)
-
-5) For decoding, we iterate over each character in the encoded string and perform a lookup in a hash map
-This final operation has a time complexity of O(n)
-
-Overall, the time complexity of the whole procedure is O(n)
-"""
 class TreeNode(DoubleNode):
     def __init__(self, value = None):
         super().__init__(value)
@@ -98,7 +65,7 @@ def huffman_encoding(data):
     if len(data) == 0:
         return data, None
 
-    queue = _create_linked_list_from_string(data)
+    queue = _create_linked_list_from_string_to_decode(data)
 
     tree = HuffmanTree(_create_tree_from_linked_list(queue))
     prefix_map = tree.get_prefix_map()
@@ -110,7 +77,7 @@ def huffman_encoding(data):
     return encoded, tree
 
 
-def _create_linked_list_from_string(data):
+def _create_linked_list_from_string_to_decode(data):
     frequency_map = {}
     queue = DoublyLinkedList()
     for char in data:
@@ -165,27 +132,50 @@ def huffman_decoding(data,tree):
 
 if __name__ == "__main__":
 
-    empty_string = ''
-    repeated_char_string = 'aaa'
-    a_great_sentence = "The bird is the word"
-    test_cases = [empty_string, repeated_char_string, a_great_sentence]
-    for string in test_cases:
-        print('----------------\ntest case: %s' %string)
+    # test case 1 -> empty string_to_decode
+    string_to_decode = ''
+    expected_encoded_string = ''
 
-        print ("The size of the data is: {}\n".format(sys.getsizeof(string)))
-        print ("The content of the data is: {}\n".format(string))
+    print('----------------\ntest case: %s' %string_to_decode)
+    print ("The content of the data is: {}\n".format(string_to_decode)) # expect ''
 
-        encoded_data, tree = huffman_encoding(string)
-        if encoded_data:
+    encoded_data, tree = huffman_encoding(string_to_decode)
+    assert(encoded_data == expected_encoded_string)
+    print ("The content of the encoded data is: {}\n".format(encoded_data)) # expect ''
 
-            print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
-            print ("The content of the encoded data is: {}\n".format(encoded_data))
+    decoded_data = huffman_decoding(encoded_data, tree)
+    assert(decoded_data == string_to_decode)
 
-            decoded_data = huffman_decoding(encoded_data, tree)
-            assert(decoded_data == string)
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the decoded data is: {}\n".format(decoded_data)) # expect ''
 
-            print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
-            print ("The content of the encoded data is: {}\n".format(decoded_data))
-        else:
-            assert(len(string) == 0)
-            print('empty string, nothing to decode...')
+
+
+    # test case 2 -> string of same repeated letters
+    string_to_decode = 'aaa'
+    expected_encoded_string = '111'
+    print('----------------\ntest case: %s' %string_to_decode)
+    print ("The content of the data is: {}\n".format(string_to_decode)) # expect 'aaa'
+
+    encoded_data, tree = huffman_encoding(string_to_decode)
+    assert(encoded_data == expected_encoded_string)
+    print ("The content of the encoded data is: {}\n".format(encoded_data)) # expect '111'
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+    assert(decoded_data == string_to_decode)
+    print ("The content of the decoded data is: {}\n".format(decoded_data)) # expect 'aaa'
+
+
+    # test case 3 -> string with different letters
+    string_to_decode = 'The bird is the word'
+    expected_encoded_string = '1011010001110101000011111110110000100111010000100011100111011011111110'
+    print('----------------\ntest case: %s' %string_to_decode)
+    print ("The content of the data is: {}\n".format(string_to_decode)) # expect 'The bird is the word'
+
+    encoded_data, tree = huffman_encoding(string_to_decode)
+    assert(encoded_data == expected_encoded_string)
+    print ("The content of the encoded data is: {}\n".format(encoded_data)) # expect '1011010001110101000011111110110000100111010000100011100111011011111110'
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+    assert(decoded_data == string_to_decode)
+    print ("The content of the decoded data is: {}\n".format(decoded_data)) # expect 'The bird is the word'
