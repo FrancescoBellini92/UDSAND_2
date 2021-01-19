@@ -34,8 +34,11 @@ root.add_group(child_2)
 
 sub_child = Group("subchild_group")
 sub_child.add_user("sub_child_user")
-child_1.add_group(sub_child) # case in which one groups has multiple parents
+child_1.add_group(sub_child) # case in which one groups has multiple parents (see test case 3)
 child_2.add_group(sub_child)
+
+child_1.add_user('common_child_user') # case in which one user is shared across several groups (see test case 4)
+child_2.add_user('common_child_user')
 
 
 def is_user_in_group(user, group):
@@ -56,7 +59,13 @@ def is_user_in_group(user, group):
         print('--- %s ---' %group.name)
 
         if user in group.users:
-            print('*** user <%s> found in group <%s> ***' %(group.name, user))
+            print('*** user <%s> found in group <%s> ***' %(user, group.name))
+            #expect that when a user belongs to a group that has multile parents,
+            # iteration ends at first occurence
+
+            # expect that for shared users (users belonging to multiple groups)
+            # iteration ends when at user first occurrence
+
             return True
 
         queue.extend(group.get_groups())
@@ -65,13 +74,27 @@ def is_user_in_group(user, group):
     return False
 
 # test case 1 -> user is in root group
-assert(is_user_in_group('root_user', root))
+is_found = is_user_in_group('root_user', root)
+print('the user has been found?', is_found) # expect True
+assert(is_found)
 
 # test case 2 -> user is in child group
-assert(is_user_in_group('child_1_user', root))
+is_found = is_user_in_group('child_1_user', root)
+print('the user has been found?', is_found) # expect True
+assert(is_found)
 
-# test case 3 -> user is in subgroup
-assert(is_user_in_group('sub_child_user', root))
 
-# test case 4 -> user is not present in any group
-assert(not is_user_in_group('absent_user', root))
+# test case 3 -> user is in subgroup that belongs to two parent groups
+is_found = is_user_in_group('sub_child_user', root)
+print('the user has been found?', is_found) # expect True
+assert(is_found)
+
+# test case 4 -> user present in two groups
+is_found = is_user_in_group('common_child_user', root)
+print('the user has been found?', is_found) # expect False
+assert(is_found)
+
+# test case 5 -> user is not present in any group
+is_found = is_user_in_group('absent_user', root)
+print('the user has been found?', is_found) # expect False
+assert(not is_found)

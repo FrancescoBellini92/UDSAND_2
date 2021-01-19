@@ -36,26 +36,35 @@ class LRUCache(object):
 if __name__ == '__main__':
     LRU_cache = LRUCache(5)
 
-    LRU_cache.set(1, 1)
-    LRU_cache.set(2, 2)
-    LRU_cache.set(3, 3)
-    LRU_cache.set(4, 4)
+    LRU_cache.set(1, 'a')
+    LRU_cache.set(2, 'b')
+    LRU_cache.set(3, 'c')
+    LRU_cache.set(4, 'd')
     # test case 1 -> list order of items mirrors that of insertion
-    print(LRU_cache.list.to_list()) # prints [(1, 1), (2, 2), (3, 3), (4, 4)], with items in order of insertion
-    assert(LRU_cache.list.to_list() == [(1, 1), (2, 2), (3, 3), (4, 4)])
+    print(
+        'After insertion, the cache content is (from oldest to most recent):',
+        LRU_cache.list.to_list()
+    ) # prints [(1, 1), (2, 2), (3, 3), (4, 4)], with items in order of insertion
+    assert(LRU_cache.list.to_list() == [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')])
 
 
     # test case 3 -> checks correct returns for present and absent files, and also that items are moved at the end of the
     # queue as they are "used"
-    assert(LRU_cache.get(1) == 1)  # returns 1
-    assert(LRU_cache.get(2) == 2)  # returns 2
+    assert(LRU_cache.get(1) == 'a')  # returns 1
+    assert(LRU_cache.get(2) == 'b')  # returns 2
     assert(LRU_cache.get(9) == -1) # returns -1 (not present)
-    print(LRU_cache.list.to_list()) # prints [(3, 3), (4, 4), (1, 1), (2, 2)] as 1 and 2 are moved at the end of the queue
-    assert(LRU_cache.list.to_list() == [(3, 3), (4, 4), (1, 1), (2, 2)])
+    print(
+        'After using the oldest items in the cache, the cache content is (from oldest to most recent):',
+        LRU_cache.list.to_list()
+    ) # prints [(3, 3), (4, 4), (1, 1), (2, 2)] as 1 and 2 are moved at the end of the queue
+    assert(LRU_cache.list.to_list() == [(3, 'c'), (4, 'd'), (1, 'a'), (2, 'b')])
 
     # test case 4 -> checks that, when full capacity is reached, the lest recent item is removed
-    LRU_cache.set(5, 5)
-    LRU_cache.set(6, 6)
+    LRU_cache.set(5, 'd')
+    LRU_cache.set(6, 'e')
     assert(LRU_cache.get(3) == -1) # returns -1 because the cache reached it's capacity and 3 was the least recently used entry
-    print(LRU_cache.list.to_list()) # prints [(4, 4), (1, 1), (2, 2), (5, 5), (6, 6)]) as 3 has been removed and 5 and 6 have been recently added
-    assert(LRU_cache.list.to_list() == [(4, 4), (1, 1), (2, 2), (5, 5), (6, 6)])
+    print(
+        'After reaching full capacity and removing the oldest items for adding tow new items, the cache is (from oldest to most recent):',
+        LRU_cache.list.to_list()
+    ) # prints [(4, 4), (1, 1), (2, 2), (5, 5), (6, 6)]) as 3 has been removed and 5 and 6 have been recently added
+    assert(LRU_cache.list.to_list() == [(4, 'd'), (1, 'a'), (2, 'b'), (5, 'd'), (6, 'e')])
