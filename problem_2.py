@@ -46,19 +46,15 @@ if __name__ == '__main__':
     # test case 1 -> folder with subfolders and target files
     files = find_files('.c', 'testdir_1')
     print('files found are:', files) # expect ['testdir_1\\t1.c', 'testdir_1\\subdir1\\a.c', 'testdir_1\\subdir3\\subsubdir1\\b.c', 'testdir_1\\subdir5\\a.c']
-    assert(files == ['testdir_1\\t1.c', 'testdir_1\\subdir1\\a.c', 'testdir_1\\subdir3\\subsubdir1\\b.c', 'testdir_1\\subdir5\\a.c'])
-
+    for file in ['testdir_1\\t1.c', 'testdir_1\\subdir1\\a.c', 'testdir_1\\subdir3\\subsubdir1\\b.c', 'testdir_1\\subdir5\\a.c']:
+        assert(file in files)
     # test case 2 -> folder with subfolders and no target files
     files = find_files('.c', 'testdir_2')
     print('files found are:', files) # expect []
     assert(files == [])
 
-    # test case 3 -> empty folder
-    files = find_files('.c', 'testdir_3')
-    print('files found are:', files) # expect []
-    assert(files == [])
 
-    # test case 4 -> non-existent folder
-    files = find_files('.c', 'testdir_4')
+    # test case 3 -> non-existent folder
+    files = find_files('.c', 'testdir_3')
     print('files found are:', files) # expect []
     assert(files == [])

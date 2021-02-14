@@ -15,3 +15,7 @@ The time complexity of moving a node to the endo of the list is also O(1), as on
 and moving it to the tail of the list (of which we maintain a reference)
 
 Overall, each operation has a time complexity of O(1)
+
+In terms of space complexity, it's equal to the size of the cache ( O(n) ), as:
+1) we have up to n nodes in the cache linked list
+2) the hash table would also mantain pointers tho those nodes
